@@ -2,11 +2,17 @@ const Questions = require("../models/questions.js");
 
 const getAllquestions = async (req, res) => {
   try {
-    const questions = await Questions.find();
+    let questions;
+
+    const { page, limit } = await req.query;
+    const offset = (page - 1) * limit;
+    questions = await Questions.find().skip(offset).limit(limit);
+
     return res.status(200).json({
       status: "OK",
-      data: questions,
       count: questions.length,
+
+      data: questions,
     });
   } catch (error) {
     return res.status(409).json({
