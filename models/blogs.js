@@ -1,19 +1,11 @@
 const mongoose = require("mongoose");
 
-const questionSchema = new mongoose.Schema({
-  username: {
+const blogs = new mongoose.Schema({
+  thumbnail: {
     type: String,
     required: true,
   },
-  email: {
-    type: String,
-    required: true,
-  },
-  phone: {
-    type: String,
-    required: true,
-  },
-  question: {
+  title: {
     type: String,
     required: true,
   },
@@ -21,8 +13,18 @@ const questionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+    required: true,
+  },
+  body: {
+    type: String,
+    required: true,
+  },
+  author: {
+    type: String,
+    required: true,
+  },
 });
 
-module.exports = mongoose.model("Questions", questionSchema);
-
-// userName, email, phone, question
+module.exports = mongoose.model("Blogs", blogs);

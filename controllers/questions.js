@@ -5,8 +5,8 @@ const getAllquestions = async (req, res) => {
     let questions;
 
     const { page, limit } = await req.query;
-    const offset = (page - 1) * limit;
-    questions = await Questions.find().skip(offset).limit(limit);
+
+    questions = await Questions.find({}, null, { skip:page, limit });
 
     return res.status(200).json({
       status: "OK",
@@ -59,9 +59,11 @@ const deleteQuestion = async (req, res) => {
   try {
     const { id } = req.params;
     await Questions.findByIdAndDelete(id);
+    const questions = await Questions.find();
     return res.status(200).json({
       status: "OK",
-      message: "Sual silinmişdir",
+      count: questions.length,
+      questions: questions,
     });
   } catch (error) {
     return res.status(409).json({
