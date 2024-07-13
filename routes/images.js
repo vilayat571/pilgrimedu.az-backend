@@ -1,6 +1,7 @@
 const express = require("express");
-const { addBlog, allBlogs, deleteBlog, getSingleBlog } = require("../controllers/blogs.js");
+
 const multer = require("multer");
+const { addImage, allImages, deleteImage } = require("../controllers/images");
 
 const router = express.Router();
 
@@ -22,9 +23,8 @@ const upload = multer({
   limits: { fieldSize: 25 * 1024 * 1024 },
 });
 
-router.post("/api/v1/blogs/add", upload.single("thumbnail"), addBlog);
-router.get("/api/v1/blogs", allBlogs);
-router.delete("/api/v1/blogs/delete/:id", deleteBlog);getSingleBlog
-router.get("/api/v1/blogs/:id", getSingleBlog);
+router.post("/api/v1/images/add", upload.single("resultImg"), addImage);
+router.get("/api/v1/images", allImages);
+router.delete("/api/v1/images/delete/:id", deleteImage);
 
 module.exports = router;

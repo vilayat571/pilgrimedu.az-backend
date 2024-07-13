@@ -1,4 +1,5 @@
 const Blogs = require("../models/blogs.js");
+const nodemailer = require("nodemailer");
 
 const addBlog = async (req, res) => {
   try {
@@ -29,7 +30,20 @@ const addBlog = async (req, res) => {
 
 const allBlogs = async (req, res) => {
   try {
-    const blogs = await Blogs.find();
+    const title = req.query.title?.toLowerCase();
+    const limitValue = req.query.limit;
+    const skipValue = req.query.skip;
+    let blogs;
+    if (title) {
+      blogs = await Blogs.find({
+        title: { $regex: title, $options: "i" },
+      })
+        .limit(limitValue)
+        .skip(skipValue);
+    } else {
+      blogs = await Blogs.find().limit(limitValue).skip(skipValue);
+    }
+
     return res.status(200).json({
       status: "OK",
       count: blogs.length,
@@ -59,8 +73,26 @@ const deleteBlog = async (req, res) => {
   }
 };
 
+const getSingleBlog = async (req, res) => {
+  try {
+    const { id } = await req.params;
+    const singleBlog = await Blogs.findById(id);
+
+    return res.status(200).json({
+      status: "OK",
+      blog: singleBlog,
+    });
+  } catch (error) {
+    return res.status(409).json({
+      status: "FAILED",
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   addBlog,
   allBlogs,
   deleteBlog,
+  getSingleBlog,
 };
