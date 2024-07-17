@@ -6,6 +6,7 @@ const Authors = require("./routes/author.js");
 const Scholarships = require("./routes/scholarship.js");
 const Blogs = require("./routes/blogs.js");
 const Images = require("./routes/images.js");
+const Users = require("./routes/userAuth.js");
 
 const app = express();
 app.use(cors());
@@ -16,6 +17,7 @@ app.use("/", Authors);
 app.use("/", Scholarships);
 app.use("/", Blogs);
 app.use("/", Images);
+app.use("/", Users);
 
 db();
 
