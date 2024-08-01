@@ -6,7 +6,7 @@ const addBlog = async (req, res) => {
     const { title, date, description, body, author } = await req.body;
 
     const newBlog = await Blogs.create({
-      thumbnail: `http://localhost:5000/${req.file.path}`,
+      thumbnail: `https://pilgrim-backend.onrender.com/${req.file.path}`,
       title,
       date,
       description,

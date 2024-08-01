@@ -5,7 +5,7 @@ const addImage = async (req, res) => {
     const { title } = await req.body;
 
     const newItem = await Images.create({
-      resultImg: `http://localhost:5000/${req.file.path}`,
+      resultImg: `https://pilgrim-backend.onrender.com/${req.file.path}`,
       title,
     });
 

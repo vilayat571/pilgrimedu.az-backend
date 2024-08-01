@@ -20,21 +20,27 @@ const addScholarship = async (req, res) => {
 const getScholarships = async (req, res) => {
   try {
 
-    const type=req.query?.type;
-    const degree=req.query?.degree;
+    const {type, region}=req.query;
+
+    const filter={};
+    if(type) filter.type=type;
+    if(region) filter.region=region;
+
     const name = req.query.name?.toLowerCase();
+
     const limitValue = req.query.limit;
     const skipValue = req.query.skip;
+    
     let scholarships;
     if (name?.length > 0) {
       scholarships = await Scholarship.find({
-        name: { $regex: name, $options: "i" }, degree, type
+        name: { $regex: name, $options: "i" }, filter
       })
         .limit(limitValue)
         .skip(skipValue);
     }
 
-    scholarships = await Scholarship.find({degree, type}).limit(limitValue).skip(skipValue);
+    scholarships = await Scholarship.find(filter).limit(limitValue).skip(skipValue);
 
     return res.status(200).json({
       status: "OK",

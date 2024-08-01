@@ -138,9 +138,52 @@ const forgotPassword = async (req, res) => {
   }
 };
 
+const resetPass = async (req, res) => {
+  try {
+    const resetToken = crypto
+      .createHash("sha256")
+      .update(req.params.token)
+      .digest("hex");
+
+    const user = await UserSchema.findOne({
+      resetPasswordToken: resetToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(504).json({
+        status: "FAILED",
+        message: "Token uyğun deyil!",
+      });
+    }
+
+    user.password = await bcrypt.hash(req.body.password, 10);
+    user.resetPasswordExpire = undefined;
+    user.resetPasswordToken = undefined;
+
+    await user.save();
+
+    const token = jwt.sign({ id: user._id }, "SECRETTOKEN", {
+      expiresIn: "1h",
+    });
+    return res.status(200).json({
+      status: "OK",
+      message: "Şifrə yeniləndi!",
+      user,
+      token,
+    });
+  } catch (error) {
+    return res.status(504).json({
+      status: "FAILED",
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   forgotPassword,
   getAllUsers,
+  resetPass,
 };
