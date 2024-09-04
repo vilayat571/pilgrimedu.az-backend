@@ -17,30 +17,59 @@ const addScholarship = async (req, res) => {
   }
 };
 
+const editScholarship = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+    const upDatedScholarhips = await Scholarship.findByIdAndUpdate(
+      id,
+      { $set: updateData }, // Update operation using data from req.body
+      { new: true }
+    );
+    upDatedScholarhips.save();
+
+    const scholarhips = await Scholarship.find();
+
+    return res.status(200).json({
+      status: "OK",
+      message: "Təqaüd proqramı editləndi",
+      count:scholarhips.length,
+      updateData
+    });
+  } catch (error) {
+    return res.status(409).json({
+      status: "FAILED",
+      message: error.message,
+    });
+  }
+};
+
 const getScholarships = async (req, res) => {
   try {
+    const { type, region } = req.query;
 
-    const {type, region}=req.query;
-
-    const filter={};
-    if(type) filter.type=type;
-    if(region) filter.region=region;
+    const filter = {};
+    if (type) filter.type = type;
+    if (region) filter.region = region;
 
     const name = req.query.name?.toLowerCase();
 
     const limitValue = req.query.limit;
     const skipValue = req.query.skip;
-    
+
     let scholarships;
     if (name?.length > 0) {
       scholarships = await Scholarship.find({
-        name: { $regex: name, $options: "i" }, filter
+        name: { $regex: name, $options: "i" },
+        filter,
       })
         .limit(limitValue)
         .skip(skipValue);
     }
 
-    scholarships = await Scholarship.find(filter).limit(limitValue).skip(skipValue);
+    scholarships = await Scholarship.find(filter)
+      .limit(limitValue)
+      .skip(skipValue);
 
     return res.status(200).json({
       status: "OK",
@@ -73,4 +102,9 @@ const deleteScholarship = async (req, res) => {
   }
 };
 
-module.exports = { addScholarship, getScholarships, deleteScholarship };
+module.exports = {
+  addScholarship,
+  getScholarships,
+  deleteScholarship,
+  editScholarship,
+};
