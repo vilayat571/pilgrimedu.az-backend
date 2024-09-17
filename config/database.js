@@ -1,13 +1,12 @@
 const mongoose = require("mongoose");
 
-const url =
-  "mongodb+srv://vilayat:gwdtYtwOYd1dpknz@pilgrim.5cdhyyf.mongodb.net/?retryWrites=true&w=majority&appName=pilgrim";
+const url = "mongodb+srv://user1:tzyHIlfBvQqZAOgi@cluster-test-azer.6b3ws.mongodb.net/?retryWrites=true&w=majority&appName=cluster-test-azer";
 
-db = () => {
+const db = () => {
   mongoose
     .connect(url)
     .then(() => console.log("DB connected"))
-    .catch((err) => console.log(err.message));
+    .catch((err) => console.log("DB connection error:", err.message));
 };
 
 module.exports = db;

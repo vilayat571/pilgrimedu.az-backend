@@ -1,5 +1,11 @@
 const express = require("express");
-const { addBlog, allBlogs, deleteBlog, getSingleBlog } = require("../controllers/blogs.js");
+const {
+  addBlog,
+  allBlogs,
+  deleteBlog,
+  getSingleBlog,
+  editAblog,
+} = require("../controllers/blogs.js");
 const multer = require("multer");
 
 const router = express.Router();
@@ -24,7 +30,9 @@ const upload = multer({
 
 router.post("/api/v1/blogs/add", upload.single("thumbnail"), addBlog);
 router.get("/api/v1/blogs", allBlogs);
-router.delete("/api/v1/blogs/delete/:id", deleteBlog);getSingleBlog
+router.delete("/api/v1/blogs/delete/:id", deleteBlog);
+getSingleBlog;
 router.get("/api/v1/blogs/:id", getSingleBlog);
+router.put("/api/v1/blogs/put/:id", upload.single("thumbnail"), editAblog);
 
 module.exports = router;

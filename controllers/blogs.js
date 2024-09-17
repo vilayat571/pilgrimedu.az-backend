@@ -90,9 +90,48 @@ const getSingleBlog = async (req, res) => {
   }
 };
 
+
+
+
+
+const editAblog = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Access form data fields via req.body and files via req.file(s)
+    const updatedBlog = {
+      title: req.body.title,
+      description: req.body.description,
+      date: req.body.date,
+      body: req.body.body,
+      thumbnail: req.file ? req.file.filename : null, // If you're handling file upload
+    };
+
+
+    const editedBlog = await Blogs.findByIdAndUpdate(
+      id,
+      updatedBlog,
+      { new: true }
+    );
+
+    return res.status(200).json({
+      status: "OK",
+      message: "Blog yeniləndi",
+      editedBlog,
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: "FAILED",
+      message: error.message,
+    });
+  }
+};
+
+
 module.exports = {
   addBlog,
   allBlogs,
   deleteBlog,
   getSingleBlog,
+  editAblog,
 };
