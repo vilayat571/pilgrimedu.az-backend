@@ -25,14 +25,14 @@ const registerUser = async (req, res) => {
     });
     return res.status(201).json({
       status: "OK",
-      message: "Yeni bir istifadəçi əlavə edildi",
+      message: "Uğurla qeydiyyatdan keçdiniz! 🎉",
       user: newUser,
       token,
     });
   } else {
     return res.status(504).json({
       status: "FAILED",
-      message: "Belə bir istifadəçi mövcuddur!",
+      message: "Bu epoçt adresi ilə bir istifadəçı mövcuddur!",
     });
   }
 };

@@ -5,6 +5,7 @@ const {
   deleteBlog,
   getSingleBlog,
   editAblog,
+  deleteAll,
 } = require("../controllers/blogs.js");
 const multer = require("multer");
 
@@ -34,5 +35,6 @@ router.delete("/api/v1/blogs/delete/:id", deleteBlog);
 getSingleBlog;
 router.get("/api/v1/blogs/:id", getSingleBlog);
 router.put("/api/v1/blogs/put/:id", upload.single("thumbnail"), editAblog);
+router.delete("/api/v1/blogs/deleteAll", deleteAll);
 
 module.exports = router;

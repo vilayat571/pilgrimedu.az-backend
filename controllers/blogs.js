@@ -28,6 +28,26 @@ const addBlog = async (req, res) => {
   }
 };
 
+const deleteAll = async (req, res) => {
+  try {
+    // Await the result of the deleteMany operation
+    await Blogs.deleteMany();
+
+    return res.status(201).json({
+      message: "Bütün bloqlar uğurla silinmişdir!",
+      status: "OK",
+    });
+  } catch (error) {
+    // Handle any errors that occur during the deletion
+    return res.status(500).json({
+      message: "Bloqlar silinərkən xəta baş verdi!",
+      status: "ERROR",
+      error: error.message,
+    });
+  }
+};
+
+
 const allBlogs = async (req, res) => {
   try {
     const title = req.query.title?.toLowerCase();
@@ -90,10 +110,6 @@ const getSingleBlog = async (req, res) => {
   }
 };
 
-
-
-
-
 const editAblog = async (req, res) => {
   try {
     const { id } = req.params;
@@ -107,12 +123,9 @@ const editAblog = async (req, res) => {
       thumbnail: req.file ? req.file.filename : null, // If you're handling file upload
     };
 
-
-    const editedBlog = await Blogs.findByIdAndUpdate(
-      id,
-      updatedBlog,
-      { new: true }
-    );
+    const editedBlog = await Blogs.findByIdAndUpdate(id, updatedBlog, {
+      new: true,
+    });
 
     return res.status(200).json({
       status: "OK",
@@ -127,11 +140,11 @@ const editAblog = async (req, res) => {
   }
 };
 
-
 module.exports = {
   addBlog,
   allBlogs,
   deleteBlog,
   getSingleBlog,
   editAblog,
+  deleteAll
 };
