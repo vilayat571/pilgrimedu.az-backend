@@ -22,7 +22,7 @@ const questionSchema = new mongoose.Schema({
     required: true,
   },
 });
-≠
+
 module.exports = mongoose.model("Questions", questionSchema);
 
 // userName, email, phone, question
