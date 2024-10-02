@@ -70,6 +70,33 @@ const loginUser = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
+    const users = await UserSchema.find();
+
+    return res.status(200).json({
+      status: "OK",
+      message: "Bütün istifadəçilər!",
+      count: users.length,
+      users,
+    });
+  } catch (error) {
+    return res.status(404).json({
+      status: "FAILED",
+      message: error.message,
+    });
+  }
+};
+
+const removeUser = async (req, res) => {
+  try {
+    const { id } = await req.params;
+    await UserSchema.findByIdAndDelete(id);
+    const users = await UserSchema.find();
+
+    return res.status(200).json({
+      status: "OK",
+      message: "İstifadəçi silinmişdir",
+      users,
+    });
   } catch (error) {
     return res.status(404).json({
       status: "FAILED",
@@ -153,7 +180,8 @@ const resetPass = async (req, res) => {
     if (!user) {
       return res.status(504).json({
         status: "FAILED",
-        message: "Token uyğun deyil!",
+        message:
+          "Linkin müddəti bitmişdir. Zəhmət olmasa e-poçt hesabınıza yenidən link göndərin.",
       });
     }
 
@@ -180,10 +208,43 @@ const resetPass = async (req, res) => {
   }
 };
 
+const editUser = async (req, res) => {
+  try {
+    const { id } = req.params;  // Retrieve user ID from route parameters
+    const userData = req.body;
+    const updatedUser = await UserSchema.findByIdAndUpdate(
+      id,
+      { $set: userData },  // Update operation using data from req.body
+      { new: true }  // Return the updated document
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({
+        status: "FAILED",
+        message: "İstifadəçi tapılmadı",
+      });
+    }
+
+    return res.status(200).json({
+      status: "OK",
+      message: "İstifadəçi məlumatları yenilənmişdir",
+      updatedUser,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "FAILED",
+      message: error.message,
+    });
+  }
+};
+
+
 module.exports = {
   registerUser,
   loginUser,
   forgotPassword,
   getAllUsers,
   resetPass,
+  removeUser,
+  editUser,
 };
