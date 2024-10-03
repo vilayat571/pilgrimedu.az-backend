@@ -120,7 +120,7 @@ const editAblog = async (req, res) => {
       description: req.body.description,
       date: req.body.date,
       body: req.body.body,
-      thumbnail: req.file ? req.file.filename : null, // If you're handling file upload
+      thumbnail: `http://localhost:3001/${req.file.path}`,
     };
 
     const editedBlog = await Blogs.findByIdAndUpdate(id, updatedBlog, {
