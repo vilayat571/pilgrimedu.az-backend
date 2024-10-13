@@ -2,6 +2,7 @@ const Scholarship = require("../models/scholarships.js");
 
 const addScholarship = async (req, res) => {
   try {
+    
     const scholarship = await Scholarship.create(req.body);
 
     return res.status(201).json({

@@ -124,7 +124,7 @@ const forgotPassword = async (req, res) => {
   user.resetPasswordExpire = new Date(Date.now() + 5 * 60 * 1000);
 
   await user.save({ validateBeforeSave: false });
-  const passwordUrl = `http://localhost:5173/shifreyenile/${resetToken}`;
+  const passwordUrl = `https://pilgrimmain.netlify.app/shifreyenile/${resetToken}`;
 
   const message = ` Reset password : ${passwordUrl}`;
 
