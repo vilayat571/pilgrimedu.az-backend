@@ -126,22 +126,22 @@ const forgotPassword = async (req, res) => {
   await user.save({ validateBeforeSave: false });
   const passwordUrl = `https://pilgrimmain.netlify.app/shifreyenile/${resetToken}`;
 
-  const message = ` Reset password : ${passwordUrl}`;
+  const message = `Reset password: ${passwordUrl}`;
 
   try {
+    // Gmail SMTP configuration for nodemailer
     var transporter = nodemailer.createTransport({
-      host: "sandbox.smtp.mailtrap.io",
-      port: 2525,
+      service: "gmail",
       auth: {
-        user: "8db7a6c31b8588",
-        pass: "b1276e32ef267e",
+        user: 'nihatmemmedov.0520@gmail.com',  // Use environment variables for security
+        pass: 'Nm209805',  // Gmail password or App Password
       },
     });
 
     // Email data
     const mailOptions = {
-      from: "vilayat571@gmail.com",
-      to: user.email,
+      from: 'nihatmemmedov.0520@gmail.com',  // Sender email (your Gmail)
+      to: user.email,               // Recipient email
       subject: "Reset password",
       text: message,
     };
@@ -164,6 +164,7 @@ const forgotPassword = async (req, res) => {
     });
   }
 };
+
 
 const resetPass = async (req, res) => {
   try {
@@ -210,12 +211,12 @@ const resetPass = async (req, res) => {
 
 const editUser = async (req, res) => {
   try {
-    const { id } = req.params;  // Retrieve user ID from route parameters
+    const { id } = req.params; // Retrieve user ID from route parameters
     const userData = req.body;
     const updatedUser = await UserSchema.findByIdAndUpdate(
       id,
-      { $set: userData },  // Update operation using data from req.body
-      { new: true }  // Return the updated document
+      { $set: userData }, // Update operation using data from req.body
+      { new: true } // Return the updated document
     );
 
     if (!updatedUser) {
@@ -237,7 +238,6 @@ const editUser = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
   registerUser,
