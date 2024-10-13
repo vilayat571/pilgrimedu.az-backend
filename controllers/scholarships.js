@@ -91,9 +91,12 @@ const deleteScholarship = async (req, res) => {
 
     await Scholarship.findByIdAndDelete(id);
 
+    const scholarships=await Scholarship.find();
+
     return res.status(200).json({
       status: "OK",
       message: "Təqaüd proqramı silindi",
+      scholarships
     });
   } catch (error) {
     return res.status(409).json({

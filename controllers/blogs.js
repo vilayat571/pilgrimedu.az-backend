@@ -1,5 +1,4 @@
 const Blogs = require("../models/blogs.js");
-const nodemailer = require("nodemailer");
 
 const addBlog = async (req, res) => {
   try {
@@ -47,7 +46,6 @@ const deleteAll = async (req, res) => {
   }
 };
 
-
 const allBlogs = async (req, res) => {
   try {
     const title = req.query.title?.toLowerCase();
@@ -80,10 +78,14 @@ const allBlogs = async (req, res) => {
 const deleteBlog = async (req, res) => {
   try {
     const { id } = await req.params;
+
     await Blogs.findByIdAndDelete(id);
+    const blogs = await Blogs.find();
+
     return res.status(200).json({
       status: "OK",
       message: "Bloq silinmişdir",
+      blogs,
     });
   } catch (error) {
     return res.status(409).json({
@@ -114,23 +116,32 @@ const editAblog = async (req, res) => {
   try {
     const { id } = req.params;
 
+    const existingBlog = await Blogs.findById(id);
+
+    const newThumbnail = req.file
+      ? `http://localhost:3001/${req.file.path}`
+      : existingBlog.thumbnail;
+
     // Access form data fields via req.body and files via req.file(s)
     const updatedBlog = {
       title: req.body.title,
       description: req.body.description,
       date: req.body.date,
       body: req.body.body,
-      thumbnail: `http://localhost:3001/${req.file.path}`,
+      thumbnail: newThumbnail,
     };
 
     const editedBlog = await Blogs.findByIdAndUpdate(id, updatedBlog, {
       new: true,
     });
 
+    const allBlogs = await Blogs.find();
+
     return res.status(200).json({
       status: "OK",
       message: "Blog yeniləndi",
       editedBlog,
+      blogs: allBlogs,
     });
   } catch (error) {
     res.status(404).json({
@@ -146,5 +157,5 @@ module.exports = {
   deleteBlog,
   getSingleBlog,
   editAblog,
-  deleteAll
+  deleteAll,
 };
