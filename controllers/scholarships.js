@@ -2,7 +2,6 @@ const Scholarship = require("../models/scholarships.js");
 
 const addScholarship = async (req, res) => {
   try {
-    
     const scholarship = await Scholarship.create(req.body);
 
     return res.status(201).json({
@@ -24,18 +23,17 @@ const editScholarship = async (req, res) => {
     const updateData = req.body;
     const upDatedScholarhips = await Scholarship.findByIdAndUpdate(
       id,
-      { $set: updateData }, // Update operation using data from req.body
+      { $set: updateData },
       { new: true }
     );
     upDatedScholarhips.save();
 
-    const scholarhips = await Scholarship.find();
+    const scholarships = await Scholarship.find();
 
     return res.status(200).json({
       status: "OK",
-      message: "Təqaüd proqramı editləndi",
-      count:scholarhips.length,
-      updateData
+      message: "Təqaüd proqramı yeniləndi!",
+      scholarships,
     });
   } catch (error) {
     return res.status(409).json({
@@ -91,12 +89,12 @@ const deleteScholarship = async (req, res) => {
 
     await Scholarship.findByIdAndDelete(id);
 
-    const scholarships=await Scholarship.find();
+    const scholarships = await Scholarship.find();
 
     return res.status(200).json({
       status: "OK",
       message: "Təqaüd proqramı silindi",
-      scholarships
+      scholarships,
     });
   } catch (error) {
     return res.status(409).json({

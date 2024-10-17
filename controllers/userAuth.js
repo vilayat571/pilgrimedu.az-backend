@@ -133,15 +133,15 @@ const forgotPassword = async (req, res) => {
     var transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: 'nihatmemmedov.0520@gmail.com',  // Use environment variables for security
-        pass: 'Nm209805',  // Gmail password or App Password
+        user: "nihatmemmedov.0520@gmail.com", // Use environment variables for security
+        pass: "Nm209805", // Gmail password or App Password
       },
     });
 
     // Email data
     const mailOptions = {
-      from: 'nihatmemmedov.0520@gmail.com',  // Sender email (your Gmail)
-      to: user.email,               // Recipient email
+      from: "nihatmemmedov.0520@gmail.com", // Sender email (your Gmail)
+      to: user.email, // Recipient email
       subject: "Reset password",
       text: message,
     };
@@ -164,7 +164,6 @@ const forgotPassword = async (req, res) => {
     });
   }
 };
-
 
 const resetPass = async (req, res) => {
   try {
@@ -226,10 +225,13 @@ const editUser = async (req, res) => {
       });
     }
 
+    const users = await UserSchema.find();
+
     return res.status(200).json({
       status: "OK",
       message: "İstifadəçi məlumatları yenilənmişdir",
       updatedUser,
+      users,
     });
   } catch (error) {
     return res.status(500).json({
