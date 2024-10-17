@@ -7,6 +7,7 @@ const Blogs = require("./routes/blogs.js");
 const Images = require("./routes/images.js");
 const Users = require("./routes/userAuth.js");
 const Admin = require("./routes/adminDetails.js");
+require('dotenv').config();
 
 const app = express();
 app.use(cors());
@@ -21,9 +22,11 @@ app.use("/", Admin);
 
 db();
 
+
+
 app.use("/medias", express.static("medias"));
 
-const PORT = process.env.PORT || 3000; // Default to 3000 if PORT is not set
-app.listen(port, () => {
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
   console.log(`Server started to work on port ${PORT}`);
 });

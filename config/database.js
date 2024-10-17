@@ -1,11 +1,14 @@
 const mongoose = require("mongoose");
+require('dotenv').config(); // Load environment variables
+
 const DB_URL = process.env.DB_URL;
 
-const url = DB_URL
-
 const db = () => {
+  // Log the URL for debugging
+  console.log("Connecting to MongoDB at:", DB_URL);
+
   mongoose
-    .connect(url, {
+    .connect(DB_URL, {
       serverSelectionTimeoutMS: 60000, // Increase to 60 seconds
     })
     .then(() => console.log("DB connected"))
