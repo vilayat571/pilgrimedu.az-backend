@@ -23,7 +23,7 @@ db();
 
 app.use("/medias", express.static("medias"));
 
-const port = 3001;
+const PORT = process.env.PORT || 3000; // Default to 3000 if PORT is not set
 app.listen(port, () => {
-  console.log(`Server started to work on port ${port}`);
+  console.log(`Server started to work on port ${PORT}`);
 });
