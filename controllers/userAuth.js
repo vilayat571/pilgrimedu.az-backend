@@ -126,7 +126,7 @@ const forgotPassword = async (req, res) => {
   await user.save({ validateBeforeSave: false });
   const passwordUrl = `https://pilgrimmain.netlify.app/shifreyenile/${resetToken}`;
 
-  const message = `Reset password: ${passwordUrl}`;
+  const message = `Şifrə yeniləmək üçün link: ${passwordUrl}`;
 
   try {
     // Gmail SMTP configuration for nodemailer
@@ -138,78 +138,83 @@ const forgotPassword = async (req, res) => {
         pass: "itls wpbx epbh ctql", // The 16-character App Password
       },
     });
-    
+
     // Email data
     const mailOptions = {
       from: "vilayat571@gmail.com",
-      to: user.email,  // istifadəçinin emaili
+      to: user.email, // istifadəçinin emaili
       subject: "Şifrəni Sıfırlama",
-      text: message,  // ehtiyac varsa sadə mətn mesajı
-      html: `
-        <!DOCTYPE html>
-        <html lang="az">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Şifrəni Sıfırlama</title>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    background-color: #f4f4f4;
-                    color: #333;
-                    padding: 20px;
-                }
-                .container {
-                    max-width: 600px;
-                    margin: 0 auto;
-                    background-color: #fff;
-                    padding: 20px;
-                    border-radius: 8px;
-                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                }
-                h2 {
-                    color: #333;
-                }
-                p {
-                    line-height: 1.6;
-                }
-                .button {
-                    display: inline-block;
-                    padding: 10px 20px;
-                    background-color: #4CAF50;
-                    color: #fff;
-                    text-decoration: none;
-                    border-radius: 5px;
-                    margin-top: 20px;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h2>Şifrəni Sıfırlama Tələbi</h2>
-                <p>Hörmətli istifadəçi,</p>
-                <p>Şifrənizi sıfırlamaq üçün bizə müraciət etdiyiniz üçün bu emaili göndəririk. Aşağıdakı düyməyə klikləyərək şifrənizi sıfırlaya bilərsiniz:</p>
-                <a href="https://example.com/reset-password/${user.token}" class="button">Şifrəni Sıfırla</a>
-                <p>Əgər bu tələbi siz etməmisinizsə, bu emaili görməzdən gələ bilərsiniz.</p>
-                <p>Hörmətlə,<br />Sizin Komanda</p>
-            </div>
-        </body>
-        </html>
-      `
+      text: message, // ehtiyac varsa sadə mətn mesajı
+      html: `<!DOCTYPE html>
+<html lang="az">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Şifrəni Sıfırlama</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        padding: 20px;
+        font-family: "Poppins", sans-serif;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px 25px;
+        border-radius: 4px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        color: #333;
+      }
+      p {
+        line-height: 1.6;
+      }
+      .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #16022c;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-top: 10px;
+        margin-bottom: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Şifrə yeniləmə:</h2>
+      <p>Hörmətli ${user.username},</p>
+      <p>
+        Şifrənizi sıfırlamaq üçün bizə müraciət etdiyiniz üçün bu email sizə
+        çatmışdır. Aşağıdakı düyməyə klik edərək şifrənizi yeniləyə bilərsiniz:
+      </p>
+      <a href="${passwordUrl}" class="button">Şifrəni Sıfırla</a>
+      <p>Hörmətlə,<br />Pilgrim EDU MMC</p>
+    </div>
+  </body>
+</html>
+`,
     };
-    
-    
+
     // Send the email
-    await transporter.sendMail(mailOptions);    
+    await transporter.sendMail(mailOptions);
 
     return res.status(200).json({
       status: "OK",
       message: "Mailinizi kontrol ediniz!",
     });
-  } 
-  
-  
-  catch (error) {
+  } catch (error) {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
 
