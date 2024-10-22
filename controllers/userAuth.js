@@ -135,7 +135,7 @@ const forgotPassword = async (req, res) => {
       service: "gmail",
       auth: {
         user: "vilayat571@gmail.com", // Your Gmail address
-        pass: "xmus vwil whdo lxkx", // The 16-character App Password
+        pass: "itls wpbx epbh ctql", // The 16-character App Password
       },
     });
     
@@ -154,7 +154,10 @@ const forgotPassword = async (req, res) => {
       status: "OK",
       message: "Mailinizi kontrol ediniz!",
     });
-  } catch (error) {
+  } 
+  
+  
+  catch (error) {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
 
