@@ -159,7 +159,6 @@ const forgotPassword = async (req, res) => {
     />
     <style>
       body {
-        font-family: Arial, sans-serif;
         background-color: #f4f4f4;
         color: #333;
         padding: 20px;
@@ -199,7 +198,7 @@ const forgotPassword = async (req, res) => {
         Şifrənizi sıfırlamaq üçün bizə müraciət etdiyiniz üçün bu email sizə
         çatmışdır. Aşağıdakı düyməyə klik edərək şifrənizi yeniləyə bilərsiniz:
       </p>
-      <a href="${passwordUrl}" class="button">Şifrəni Sıfırla</a>
+      <a href="${passwordUrl}" style="color:white" class="button">Şifrəni Sıfırla</a>
       <p>Hörmətlə,<br />Pilgrim EDU MMC</p>
     </div>
   </body>
