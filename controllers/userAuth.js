@@ -159,10 +159,10 @@ const forgotPassword = async (req, res) => {
     />
     <style>
       body {
+        font-family: Poppins, sans-serif;
         background-color: #f4f4f4;
         color: #333;
         padding: 20px;
-        font-family: "Poppins", sans-serif;
       }
       .container {
         max-width: 600px;
