@@ -130,24 +130,25 @@ const forgotPassword = async (req, res) => {
 
   try {
     // Gmail SMTP configuration for nodemailer
+
     var transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "nihatmemmedov.0520@gmail.com", // Use environment variables for security
-        pass: "Nm209805", // Gmail password or App Password
+        user: "vilayat571@gmail.com", // Your Gmail address
+        pass: "xmus vwil whdo lxkx", // The 16-character App Password
       },
     });
-
+    
     // Email data
     const mailOptions = {
-      from: "nihatmemmedov.0520@gmail.com", // Sender email (your Gmail)
-      to: user.email, // Recipient email
+      from: "vilayat571@gmail.com",
+      to: user.email,
       subject: "Reset password",
       text: message,
     };
-
+    
     // Send the email
-    await transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions);    
 
     return res.status(200).json({
       status: "OK",

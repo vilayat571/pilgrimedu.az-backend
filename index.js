@@ -24,9 +24,14 @@ db();
 
 
 
+
 app.use("/medias", express.static("medias"));
 
 const PORT = process.env.PORT || 3000;
+app.use(cors({
+  origin: 'http://localhost:3000', // React app URL
+  credentials: true
+}));
 app.listen(PORT, () => {
   console.log(`Server started to work on port ${PORT}`);
 });
