@@ -5,7 +5,7 @@ const addBlog = async (req, res) => {
     const { title, date, description, body, author } = await req.body;
 
     const newBlog = await Blogs.create({
-      thumbnail: `http://localhost:3001/${req.file.path}`,
+      thumbnail: `https://pilgrimedu.az/${req.file.path}`,
       title,
       date,
       description,
@@ -119,7 +119,7 @@ const editAblog = async (req, res) => {
     const existingBlog = await Blogs.findById(id);
 
     const newThumbnail = req.file
-      ? `http://localhost:3001/${req.file.path}`
+      ? `https://pilgrimedu.az/${req.file.path}`
       : existingBlog.thumbnail;
 
     // Access form data fields via req.body and files via req.file(s)
