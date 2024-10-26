@@ -7,7 +7,7 @@ const Blogs = require("./routes/blogs.js");
 const Images = require("./routes/images.js");
 const Users = require("./routes/userAuth.js");
 const Admin = require("./routes/adminDetails.js");
-require('dotenv').config();
+require("dotenv").config();
 
 const app = express();
 app.use(cors());
@@ -22,16 +22,15 @@ app.use("/", Admin);
 
 db();
 
-
-
-
 app.use("/medias", express.static("medias"));
 
 const PORT = process.env.PORT || 3000;
-app.use(cors({
-  origin: 'http://localhost:3000', // React app URL
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "https://pilgrimedu.az", // React app URL
+    credentials: true,
+  })
+);
 app.listen(PORT, () => {
   console.log(`Server started to work on port ${PORT}`);
 });
