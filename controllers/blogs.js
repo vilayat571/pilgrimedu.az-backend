@@ -5,7 +5,7 @@ const addBlog = async (req, res) => {
     const { title, date, description, body, author } = req.body;
 
     const newBlog = await Blogs.create({
-      thumbnail: req.file ? `https://pilgrimedu.az/medias/${req.file.filename}` : "",
+      thumbnail: req.file ? `${req.file.filename}` : "",
       title,
       date,
       description,
@@ -13,11 +13,8 @@ const addBlog = async (req, res) => {
       author,
     });
 
-    console.log(req.file.path);
-
     return res.status(201).json({
       status: "OK",
-      path: req.file,
       message: "Yeni bir bloq əlav edildi.",
       blog: newBlog,
     });
