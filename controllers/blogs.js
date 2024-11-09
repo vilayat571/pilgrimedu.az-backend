@@ -5,7 +5,7 @@ const addBlog = async (req, res) => {
     const { title, date, description, body, author } = req.body;
 
     const newBlog = await Blogs.create({
-      thumbnail: req.file ? `http://localhost:3000/${req.file.path}` : "",
+      thumbnail: req.file ? `https://pilgrimedu.az/${req.file.path}` : "",
       title,
       date,
       description,
