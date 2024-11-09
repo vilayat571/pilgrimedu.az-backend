@@ -15,7 +15,7 @@ const addBlog = async (req, res) => {
 
     return res.status(201).json({
       status: "OK",
-      message: "Yeni bir bloq əlav edildi.",
+      message: "Yeni bir bloq əlavə edildi.",
       blog: newBlog,
     });
   } catch (error) {
