@@ -2,16 +2,18 @@ const Blogs = require("../models/blogs.js");
 
 const addBlog = async (req, res) => {
   try {
-    const { title, date, description, body, author } = await req.body;
+    const { title, date, description, body, author } = req.body;
 
     const newBlog = await Blogs.create({
-      thumbnail: `https://pilgrimedu.az/${req.file.path}`,
+      thumbnail: req.file ? `http://localhost:3000/${req.file.path}` : "",
       title,
       date,
       description,
       body,
       author,
     });
+
+    console.log(req.file.path)
 
     return res.status(201).json({
       status: "OK",
@@ -29,15 +31,13 @@ const addBlog = async (req, res) => {
 
 const deleteAll = async (req, res) => {
   try {
-    // Await the result of the deleteMany operation
     await Blogs.deleteMany();
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: "Bütün bloqlar uğurla silinmişdir!",
       status: "OK",
     });
   } catch (error) {
-    // Handle any errors that occur during the deletion
     return res.status(500).json({
       message: "Bloqlar silinərkən xəta baş verdi!",
       status: "ERROR",
@@ -52,6 +52,7 @@ const allBlogs = async (req, res) => {
     const limitValue = req.query.limit;
     const skipValue = req.query.skip;
     let blogs;
+
     if (title) {
       blogs = await Blogs.find({
         title: { $regex: title, $options: "i" },
@@ -77,15 +78,20 @@ const allBlogs = async (req, res) => {
 
 const deleteBlog = async (req, res) => {
   try {
-    const { id } = await req.params;
+    const { id } = req.params;
 
-    await Blogs.findByIdAndDelete(id);
-    const blogs = await Blogs.find();
+    const deletedBlog = await Blogs.findByIdAndDelete(id);
+    if (!deletedBlog) {
+      return res.status(404).json({
+        status: "FAILED",
+        message: "Bloq tapılmadı",
+      });
+    }
 
     return res.status(200).json({
       status: "OK",
       message: "Bloq silinmişdir",
-      blogs,
+      blog: deletedBlog,
     });
   } catch (error) {
     return res.status(409).json({
@@ -97,7 +103,7 @@ const deleteBlog = async (req, res) => {
 
 const getSingleBlog = async (req, res) => {
   try {
-    const { id } = await req.params;
+    const { id } = req.params;
     const singleBlog = await Blogs.findById(id);
 
     return res.status(200).json({
@@ -122,7 +128,6 @@ const editAblog = async (req, res) => {
       ? `https://pilgrimedu.az/${req.file.path}`
       : existingBlog.thumbnail;
 
-    // Access form data fields via req.body and files via req.file(s)
     const updatedBlog = {
       title: req.body.title,
       description: req.body.description,
