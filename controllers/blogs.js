@@ -12,9 +12,8 @@ const addBlog = async (req, res) => {
       body,
       author,
     });
-    
 
-    console.log(req.file.path)
+    console.log(req.file.path);
 
     return res.status(201).json({
       status: "OK",
@@ -23,7 +22,7 @@ const addBlog = async (req, res) => {
       blog: newBlog,
     });
   } catch (error) {
-    return res.status(409).json({
+    return res.status(500).json({
       status: "FAILED",
       message: error.message,
     });
@@ -70,7 +69,7 @@ const allBlogs = async (req, res) => {
       blogs,
     });
   } catch (error) {
-    return res.status(409).json({
+    return res.status(500).json({
       status: "FAILED",
       message: error.message,
     });
@@ -95,7 +94,7 @@ const deleteBlog = async (req, res) => {
       blog: deletedBlog,
     });
   } catch (error) {
-    return res.status(409).json({
+    return res.status(500).json({
       status: "FAILED",
       message: error.message,
     });
@@ -107,12 +106,19 @@ const getSingleBlog = async (req, res) => {
     const { id } = req.params;
     const singleBlog = await Blogs.findById(id);
 
+    if (!singleBlog) {
+      return res.status(404).json({
+        status: "FAILED",
+        message: "Bloq tapılmadı",
+      });
+    }
+
     return res.status(200).json({
       status: "OK",
       blog: singleBlog,
     });
   } catch (error) {
-    return res.status(409).json({
+    return res.status(500).json({
       status: "FAILED",
       message: error.message,
     });
@@ -124,9 +130,15 @@ const editAblog = async (req, res) => {
     const { id } = req.params;
 
     const existingBlog = await Blogs.findById(id);
+    if (!existingBlog) {
+      return res.status(404).json({
+        status: "FAILED",
+        message: "Bloq tapılmadı",
+      });
+    }
 
     const newThumbnail = req.file
-      ? `https://pilgrimedu.az/${req.file.path}`
+      ? `https://pilgrimedu.az/medias/${req.file.filename}`
       : existingBlog.thumbnail;
 
     const updatedBlog = {
@@ -137,20 +149,15 @@ const editAblog = async (req, res) => {
       thumbnail: newThumbnail,
     };
 
-    const editedBlog = await Blogs.findByIdAndUpdate(id, updatedBlog, {
-      new: true,
-    });
-
-    const allBlogs = await Blogs.find();
+    const editedBlog = await Blogs.findByIdAndUpdate(id, updatedBlog, { new: true });
 
     return res.status(200).json({
       status: "OK",
       message: "Blog yeniləndi",
       editedBlog,
-      blogs: allBlogs,
     });
   } catch (error) {
-    res.status(404).json({
+    return res.status(500).json({
       status: "FAILED",
       message: error.message,
     });
