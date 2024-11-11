@@ -134,9 +134,8 @@ const editAblog = async (req, res) => {
       });
     }
 
-    const newThumbnail = req.file
-      ? `https://pilgrimedu.az/medias/${req.file.filename}`
-      : existingBlog.thumbnail;
+    const newThumbnail = req.file ? `${req.file.filename}` : ""
+
 
     const updatedBlog = {
       title: req.body.title,
